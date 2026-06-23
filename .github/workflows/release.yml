@@ -24,7 +24,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/*.user.js
+          files: dist/*.js
           draft: false
           prerelease: false
         env:

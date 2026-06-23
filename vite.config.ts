@@ -9,17 +9,22 @@ export default defineConfig({
   plugins: [
     monkey({
       entry: 'src/main.ts',
+      build: {
+        metaFileName: true
+      },
       userscript: {
         name: 'extended-lyrio',
         namespace: 'https://github.com/Eletary/extended-lyrio',
         version: pkg.version,
         description: 'Modern Lyrio enhancer',
-        author: 'Your Name',
+        author: 'ppip',
         match: [
           '*://nflsoi.cc/*',
           '*://www.nflsoi.cc/*'
         ],
         grant: ['GM_setClipboard', 'GM_setValue', 'GM_getValue'],
+        updateURL: 'https://github.com/Eletary/extended-lyrio/releases/latest/download/extended-lyrio.meta.js',
+        downloadURL: 'https://github.com/Eletary/extended-lyrio/releases/latest/download/extended-lyrio.user.js'
       },
     }),
   ],
