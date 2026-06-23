@@ -1,0 +1,28 @@
+{
+  "name": "extended-lyrio",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "version": "npm run build && git add -Af dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eletary/extended-lyrio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Eletary/extended-lyrio/issues"
+  },
+  "homepage": "https://github.com/Eletary/extended-lyrio",
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vite": "^8.1.0",
+    "vite-plugin-monkey": "^8.0.6"
+  }
+}
