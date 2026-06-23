@@ -6,7 +6,6 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "version": "npm run build && git add -Af dist"
   },
   "repository": {
     "type": "git",
