@@ -2,20 +2,10 @@
 
 import { waitForElement } from '../utils/dom';
 
-let lastTitle = '';
-let pollingTimer: number | null = null;
-
 function applyTitleUppercase() {
   const title = document.title;
-
-  if (title !== lastTitle && /nflsoj/i.test(title)) {
-    const newTitle = title.replace(/nflsoj/gi, 'NFLSOJ');
-    if (newTitle !== title) {
-      document.title = newTitle;
-    }
-    lastTitle = newTitle;
-  } else {
-    lastTitle = title;
+  if (/nflsoj/i.test(title)) {
+    document.title = title.replace(/nflsoj/gi, 'NFLSOJ');
   }
 }
 
@@ -32,13 +22,4 @@ export async function applyHeaderUppercase() {
 export function initTitleUppercase(): void {
   applyTitleUppercase();
   applyHeaderUppercase();
-
-  if (pollingTimer) {
-    clearInterval(pollingTimer);
-    pollingTimer = null;
-  }
-
-  pollingTimer = window.setInterval(() => {
-    applyTitleUppercase();
-  }, 500);
 }
