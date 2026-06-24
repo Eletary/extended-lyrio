@@ -8,7 +8,7 @@ A Tampermonkey userscript that enhances the Lyrio OJ experience with modern UI i
 ## ✨ Features
 
 - [x] **Hitokoto** — Inspirational quotes on the sidebar, refresh anytime
-- [ ] **Typo Fixer** — Auto-fixes typos in page title and header (e.g., "nflsoj" → "NFLSOJ")
+- [x] **Typo Fixer** — Auto-fixes typos in page title and header (e.g., "nflsoj" → "NFLSOJ")
 - [ ] **Copy Code** — One-click code copying with visual feedback
 
 Stay tuned for more features! 🚀
