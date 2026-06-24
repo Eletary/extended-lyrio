@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.1.2] - 2026-06-24
 
 ### Fixed
 - Title replacement now works reliably on page refresh and initial load.
