@@ -9,3 +9,4 @@ if [ -z "$NEW_VERSION" ]; then
 fi
 
 sed -i "s/^## \[Unreleased\]/## [$NEW_VERSION] - $CURRENT_DATE/" CHANGELOG.md
+git add CHANGELOG.md
