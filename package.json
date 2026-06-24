@@ -6,7 +6,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "release": "commit-and-tag-version --skip.changelog"
+    "release": "commit-and-tag-version --skip.changelog --commit-all"
   },
   "commit-and-tag-version": {
     "scripts": {
