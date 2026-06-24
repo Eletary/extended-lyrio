@@ -10,7 +10,7 @@
   },
   "commit-and-tag-version": {
     "scripts": {
-      "postbump": "bash scripts/update-changelog.sh"
+      "precommit": "bash scripts/update-changelog.sh"
     }
   },
   "repository": {
