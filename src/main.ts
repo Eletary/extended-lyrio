@@ -35,7 +35,7 @@ if (document.readyState === 'loading') {
 }
 
 const observer = new MutationObserver(() => {
-  console.log('Found')
+  console.log('[extended-lyrio] Content updated')
   if (navTimer) clearTimeout(navTimer);
   navTimer = window.setTimeout(initAllIfUrlChanged, 100);
 });

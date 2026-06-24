@@ -1,15 +1,17 @@
 // src/modules/title-uppercase.ts
 
-import { waitForElement } from '../utils/dom';
+import { waitForElement, waitForElementAll } from '../utils/dom';
 
-function applyTitleUppercase() {
+let titlePollTimer: number | null = null;
+
+function applyTitleUppercase(): void {
   const title = document.title;
   if (/nflsoj/i.test(title)) {
     document.title = title.replace(/nflsoj/gi, 'NFLSOJ');
   }
 }
 
-export async function applyHeaderUppercase() {
+export async function applyHeaderUppercase(): Promise<void> {
   const header = await waitForElement('._siteName_s0m91_14');
   if (header) {
     const text = header.textContent;
@@ -19,7 +21,52 @@ export async function applyHeaderUppercase() {
   }
 }
 
+function replaceTextInNode(node: Node, regex: RegExp, replacement: string): void {
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent;
+    if (text && regex.test(text)) {
+      node.textContent = text.replace(regex, replacement);
+    }
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    const children = Array.from(node.childNodes);
+    for (const child of children) {
+      replaceTextInNode(child, regex, replacement);
+    }
+  }
+}
+
+export async function applyAnswerUppercase(): Promise<void> {
+  const columns = await waitForElementAll('._columnAnswer_1yoe4_7');
+  const regex = /c\+\+/gi;
+  const replacement = 'C++';
+
+  columns.forEach(col => {
+    const firstChild = col.firstElementChild;
+    if (firstChild) {
+      replaceTextInNode(firstChild, regex, replacement);
+    }
+  });
+}
+
 export function initTitleUppercase(): void {
-  applyTitleUppercase();
   applyHeaderUppercase();
+  applyAnswerUppercase();
+  applyTitleUppercase();
+
+  if (titlePollTimer) {
+    clearInterval(titlePollTimer);
+    titlePollTimer = null;
+  }
+
+  let attempts = 0;
+  const maxAttempts = 6; // 6 * 500ms = 3s
+
+  titlePollTimer = window.setInterval(() => {
+    attempts++;
+    applyTitleUppercase();
+    if (attempts >= maxAttempts) {
+      clearInterval(titlePollTimer!);
+      titlePollTimer = null;
+    }
+  }, 500);
 }

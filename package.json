@@ -5,7 +5,13 @@
   "main": "index.js",
   "scripts": {
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "release": "commit-and-tag-version --push"
+  },
+  "commit-and-tag-version": {
+    "scripts": {
+      "postchangelog": "bash scripts/update-changelog.sh"
+    }
   },
   "repository": {
     "type": "git",
@@ -20,6 +26,7 @@
   },
   "homepage": "https://github.com/Eletary/extended-lyrio",
   "devDependencies": {
+    "commit-and-tag-version": "^12.7.3",
     "typescript": "^6.0.3",
     "vite": "^8.1.0",
     "vite-plugin-monkey": "^8.0.6"
