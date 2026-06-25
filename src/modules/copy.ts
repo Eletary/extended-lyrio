@@ -1,46 +1,6 @@
 // src/modules/copy.ts
 
 function showCopiedToast(message: string = 'Copied') {
-  const toast = document.createElement('div');
-  toast.className = 'noty_layout noty_layout__topRight';
-  toast.style.cssText = `
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    z-index: 10000;
-    max-width: 300px;
-  `;
-
-  const bar = document.createElement('div');
-  bar.className = 'noty_bar noty_type__success noty_theme__semanticui noty_close_with_click noty_has_progressbar';
-  bar.style.cssText = `
-    background: #5cb85c !important;
-    color: #fff !important;
-    border-radius: 4px;
-    padding: 10px 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  `;
-
-  const body = document.createElement('div');
-  body.className = 'noty_body';
-  body.textContent = message;
-
-  const progress = document.createElement('div');
-  progress.className = 'noty_progressbar';
-  progress.style.cssText = `
-    height: 3px;
-    background: rgba(255,255,255,0.4);
-    border-radius: 0 0 4px 4px;
-    animation: noty_progressbar 5s linear forwards;
-  `;
-
-  bar.appendChild(body);
-  bar.appendChild(progress);
-  toast.appendChild(bar);
-  document.body.appendChild(toast);
-
-  setTimeout(() => toast.remove(), 3000);
-
   if (!document.getElementById('noty-progress-keyframes')) {
     const style = document.createElement('style');
     style.id = 'noty-progress-keyframes';
@@ -52,10 +12,91 @@ function showCopiedToast(message: string = 'Copied') {
     `;
     document.head.appendChild(style);
   }
+
+  const notyContainer = document.getElementById('noty_layout__topRight');
+
+  function createNotification() {
+    const bar = document.createElement('div');
+    bar.className = 'noty_bar noty_type__success noty_theme__semanticui noty_close_with_click noty_has_progressbar';
+    bar.style.cssText = `
+      margin-bottom: 5px;
+      background: #5cb85c !important;
+      color: #fff !important;
+      border-radius: 4px;
+      padding: 10px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transform: translateX(calc(100% + 20px));
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'noty_body';
+    body.textContent = message;
+
+    const progress = document.createElement('div');
+    progress.className = 'noty_progressbar';
+    progress.style.cssText = `
+      height: 3px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 0 0 4px 4px;
+      animation: noty_progressbar 3s linear forwards;
+    `;
+
+    bar.append(body, progress);
+    return bar;
+  }
+
+  if (notyContainer) {
+    const bar = createNotification();
+    notyContainer.prepend(bar);
+
+    requestAnimationFrame(() => {
+      bar.style.transform = 'translateX(0)';
+    });
+
+    setTimeout(() => {
+      bar.style.transform = 'translateX(calc(100% + 20px))';
+      setTimeout(() => bar.remove(), 400);
+    }, 2500);
+  } else {
+    const existing = document.querySelector('.nflsoj-copy-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'nflsoj-copy-toast';
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed;
+      top: 60px;
+      right: 10px;
+      z-index: 10000;
+      background: #5cb85c;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-size: 14px;
+      white-space: nowrap;
+      transform: translateX(calc(100% + 20px));
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+    `;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => {
+      toast.style.transform = 'translateX(0)';
+    });
+
+    setTimeout(() => {
+      toast.style.transform = 'translateX(calc(100% + 20px))';
+      setTimeout(() => toast.remove(), 400);
+    }, 2500);
+  }
 }
 
 export function initCopy(): void {
-  const segments = document.querySelectorAll<HTMLElement>('.ui.segment._codeBoxSegment_122zh_8');
+  const segments = document.querySelectorAll<HTMLElement>('._codeBoxSegment_122zh_8, ._codeBoxSegment_dmlry_8');
   for (const seg of segments) {
     const pre = seg.querySelector('pre');
     if (!pre) continue;

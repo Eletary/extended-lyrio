@@ -21,10 +21,8 @@ async function fetchChangelog(): Promise<string | null> {
 
 export async function initVersionCheck() {
   const lastVersion = GM_getValue('last_version', '');
-  console.log(lastVersion);
   if (lastVersion && lastVersion !== CURRENT_VERSION) {
     GM_setValue('last_version', CURRENT_VERSION);
-    console.log(lastVersion);
     const changelog = await fetchChangelog();
     const content = changelog
       ? `<div style="white-space: pre-wrap; max-height: 60vh; overflow-y: auto;">${renderMarkdown(changelog)}</div>`
