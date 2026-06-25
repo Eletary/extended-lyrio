@@ -6,7 +6,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "release": "commit-and-tag-version --skip.changelog --commit-all"
+    "patch": "commit-and-tag-version --skip.changelog --commit-all --release-as patch",
+    "minor": "commit-and-tag-version --skip.changelog --commit-all --release-as minor",
+    "major": "commit-and-tag-version --skip.changelog --commit-all --release-as major"
   },
   "commit-and-tag-version": {
     "scripts": {
@@ -26,6 +28,7 @@
   },
   "homepage": "https://github.com/Eletary/extended-lyrio",
   "devDependencies": {
+    "@types/tampermonkey": "^5.0.5",
     "commit-and-tag-version": "^12.7.3",
     "typescript": "^6.0.3",
     "vite": "^8.1.0",
