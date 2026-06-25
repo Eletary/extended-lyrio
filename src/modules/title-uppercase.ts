@@ -2,8 +2,6 @@
 
 import { waitForElement, waitForElementAll } from '../utils/dom';
 
-let titlePollTimer: number | null = null;
-
 function applyTitleUppercase(): void {
   const title = document.title;
   if (/nflsoj/i.test(title)) {
@@ -17,6 +15,15 @@ export async function applyHeaderUppercase(): Promise<void> {
     const text = header.textContent;
     if (text && /nflsoj/i.test(text)) {
       header.textContent = text.replace(/nflsoj/gi, 'NFLSOJ');
+    }
+  }
+  const footer = await waitForElement('._footer_s0m91_137');
+  if (footer) {
+    let div = footer?.firstChild?.firstChild;
+    if (!div) return;
+    const text = div.textContent;
+    if (text && /nflsoj/i.test(text)) {
+      div.textContent = text.replace(/nflsoj/gi, 'NFLSOJ');
     }
   }
 }
@@ -52,21 +59,4 @@ export function initTitleUppercase(): void {
   applyHeaderUppercase();
   applyAnswerUppercase();
   applyTitleUppercase();
-
-  if (titlePollTimer) {
-    clearInterval(titlePollTimer);
-    titlePollTimer = null;
-  }
-
-  let attempts = 0;
-  const maxAttempts = 6; // 6 * 500ms = 3s
-
-  titlePollTimer = window.setInterval(() => {
-    attempts++;
-    applyTitleUppercase();
-    if (attempts >= maxAttempts) {
-      clearInterval(titlePollTimer!);
-      titlePollTimer = null;
-    }
-  }, 500);
 }

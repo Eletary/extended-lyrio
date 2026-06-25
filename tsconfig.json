@@ -6,7 +6,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "types": ["vite/client", "tampermonkey"]
   },
   "include": ["src"]
 }
