@@ -64,50 +64,42 @@ let modalCounter = 0;
 export function promptContent(title: string, content: string): HTMLElement {
   const id = `modal-${++modalCounter}`;
 
-  // 创建模态框容器
+  if (!document.getElementById('nflsoj-modal-keyframes')) {
+    const style = document.createElement('style');
+    style.id = 'nflsoj-modal-keyframes';
+    style.textContent = `
+      @keyframes nflsoj-modal-popup {
+        0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0; }
+        100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      }
+      @keyframes nflsoj-modal-popout {
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   const modal = document.createElement('div');
   modal.className = 'ui modal';
   modal.id = id;
-  modal.style.display = 'block'; // 默认显示（会由 Semantic UI 控制，但我们手动显示）
+  modal.style.cssText = `
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    max-width: 80%;
+    max-height: 80%;
+    overflow: auto;
+    background: #fff;
+    border-radius: 0.28571429rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    padding: 0;
+    animation: nflsoj-modal-popup 0.3s ease-out;
+  `;
 
-  // 标题
-  const header = document.createElement('div');
-  header.className = 'header';
-  header.textContent = title;
-
-  // 内容
-  const contentDiv = document.createElement('div');
-  contentDiv.className = 'content';
-  contentDiv.innerHTML = content;
-
-  // 操作按钮
-  const actions = document.createElement('div');
-  actions.className = 'actions';
-
-  const confirmBtn = document.createElement('div');
-  confirmBtn.className = 'ui positive button';
-  confirmBtn.textContent = '确定';
-
-  actions.appendChild(confirmBtn);
-  modal.append(header, contentDiv, actions);
-
-  document.body.appendChild(modal);
-
-  modal.style.display = 'block';
-  modal.style.position = 'fixed';
-  modal.style.top = '50%';
-  modal.style.left = '50%';
-  modal.style.transform = 'translate(-50%, -50%)';
-  modal.style.zIndex = '10000';
-  modal.style.maxWidth = '80%';
-  modal.style.maxHeight = '80%';
-  modal.style.overflow = 'auto';
-  modal.style.background = '#fff';
-  modal.style.borderRadius = '0.28571429rem';
-  modal.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
-  modal.style.padding = '0';
-
-  // 添加灰色背景遮罩
   const overlay = document.createElement('div');
   overlay.style.cssText = `
     position: fixed;
@@ -117,17 +109,54 @@ export function promptContent(title: string, content: string): HTMLElement {
   `;
   document.body.appendChild(overlay);
 
-  // 点击确定关闭
-  confirmBtn.addEventListener('click', () => {
-    modal.remove();
-    overlay.remove();
-  });
+  const header = document.createElement('div');
+  header.className = 'header';
+  header.textContent = title;
+  header.style.cssText = `
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+  `;
 
-  // 点击遮罩关闭（可选）
-  overlay.addEventListener('click', () => {
-    modal.remove();
-    overlay.remove();
-  });
+  const contentDiv = document.createElement('div');
+  contentDiv.className = 'content';
+  contentDiv.innerHTML = content;
+  contentDiv.style.cssText = `
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 60vh;
+  `;
+
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+  actions.style.cssText = `
+    padding: 10px 20px;
+    border-top: 1px solid #ddd;
+    text-align: right;
+  `;
+
+  const confirmBtn = document.createElement('div');
+  confirmBtn.className = 'ui positive button';
+  confirmBtn.textContent = 'OK';
+  confirmBtn.style.cursor = 'pointer';
+
+  actions.appendChild(confirmBtn);
+  modal.append(header, contentDiv, actions);
+  document.body.appendChild(modal);
+
+  const closeModal = () => {
+    modal.style.animation = 'nflsoj-modal-popout 0.3s ease-in forwards';
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity 0.3s';
+    setTimeout(() => {
+      modal.remove();
+      overlay.remove();
+    }, 300);
+  };
+
+  confirmBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
 
   return modal;
 }

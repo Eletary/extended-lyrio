@@ -25,9 +25,12 @@ export default defineConfig({
           '*://nflsoi.cc/*',
           '*://www.nflsoi.cc/*'
         ],
-        grant: ['GM_setClipboard', 'GM_setValue', 'GM_getValue'],
+        grant: ['GM_setClipboard', 'GM_setValue', 'GM_getValue', 'GM_info'],
         updateURL: 'https://github.com/Eletary/extended-lyrio/releases/latest/download/extended-lyrio.meta.js',
-        downloadURL: 'https://github.com/Eletary/extended-lyrio/releases/latest/download/extended-lyrio.user.js'
+        downloadURL: 'https://github.com/Eletary/extended-lyrio/releases/latest/download/extended-lyrio.user.js',
+        require: [
+          'https://cdn.jsdelivr.net/npm/marked/marked.min.js'
+        ],
       },
     }),
   ],

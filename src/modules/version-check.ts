@@ -1,6 +1,7 @@
 // src/modules/version-check.ts
 
 import { promptContent } from '../utils/dom';
+import { renderMarkdown } from '../utils/markdown';
 
 const CURRENT_VERSION = GM_info.script.version;
 
@@ -20,15 +21,15 @@ async function fetchChangelog(): Promise<string | null> {
 
 export async function initVersionCheck() {
   const lastVersion = GM_getValue('last_version', '');
-
+  console.log(lastVersion);
   if (lastVersion && lastVersion !== CURRENT_VERSION) {
+    GM_setValue('last_version', CURRENT_VERSION);
+    console.log(lastVersion);
     const changelog = await fetchChangelog();
     const content = changelog
-      ? `<div style="white-space: pre-wrap; max-height: 60vh; overflow-y: auto;">${changelog}</div>`
-      : '查看完整更新日志：<a href="https://github.com/Eletary/extended-lyrio/releases/latest" target="_blank">点击这里</a>';
+      ? `<div style="white-space: pre-wrap; max-height: 60vh; overflow-y: auto;">${renderMarkdown(changelog)}</div>`
+      : 'View full changelog：<a href="https://github.com/Eletary/extended-lyrio/releases/latest" target="_blank">点击这里</a>';
 
-    promptContent(`🎉 已更新至 v${CURRENT_VERSION}`, content);
+    promptContent(`🎉 Updated to v${CURRENT_VERSION}`, content);
   }
-
-  GM_setValue('last_version', CURRENT_VERSION);
 }

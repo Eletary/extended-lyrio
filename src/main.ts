@@ -2,12 +2,14 @@
 import { initTitleUppercase } from './modules/title-uppercase';
 import { initHitokoto } from './modules/hitokoto';
 import { initCopy } from './modules/copy';
+import { initVersionCheck } from './modules/version-check';
 
 let lastUrl = location.href;
 let navTimer: number | null = null;
 let titlePollTimer: number | null = null;
 
 function initAll() {
+  initVersionCheck();
   if (window.location.port !== '10999') {
     return;
   }
